@@ -28,6 +28,8 @@ build:
     - script:
         name: gradle build
         code: |
+          echo "cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR"
+          cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR
           ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
           echo "cp build/libs/*.jar $WERCKER_CACHE_DIR"
           cp build/libs/*.jar $WERCKER_CACHE_DIR
@@ -79,3 +81,13 @@ security-scan:
           ls -alF $WERCKER_CACHE_DIR/owasp
           echo "% cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html"
           cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html
+
+deploy-grafeas:
+  # The steps that deploy the grafeas service on gke cluster
+  steps:
+    - kubectl:
+        server: https://35.184.0.39
+        username: admin
+        password: TJ5JuGZorg0cdpIy
+        insecure-skip-tls-verify: true
+        command: apply -f $WERCKER_CACHE_DIR/grafeas.yaml
