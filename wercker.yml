@@ -118,6 +118,6 @@ generateOccurrences:
         name: List the occurrences
         code: |
           echo "% List occurrences"
-          curl $CURL_PROXY -v http://35.225.38.18:8080/v1alpha1/projects/getting-started-java/occurrences
+          curl -v http://35.225.38.18:8080/v1alpha1/projects/getting-started-java/occurrences
           echo "% List notes"
-          curl $CURL_PROXY -v http://35.225.38.18:8080/v1alpha1/projects/NVD/notes
+          curl -v http://35.225.38.18:8080/v1alpha1/projects/NVD/notes
