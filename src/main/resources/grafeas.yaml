@@ -5,12 +5,8 @@ metadata:
     app: grafeas
   name: grafeas
 spec:
-  ports:
-    - name: http
-      port: 8080
-      protocol: "TCP"
-  selector:
-    app: grafeas
+  type: ExternalName
+  externalName: sscm-demo.example.com
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -24,5 +20,5 @@ spec:
     spec:
       containers:
         - name: grafeas
-          image: "wmhopkins/sscm"
+          image: "gcr.io/hightowerlabs/grafeas:0.0.1"
           imagePullPolicy: Always
