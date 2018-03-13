@@ -118,14 +118,14 @@ deploy-grafeas:
 generateOccurrences:
   # The steps that parse the dependency-check-report.json to generate occurrences and upload to grafeas server
   steps:
-    - juanli-oracle/parse-upload-owasp-report:
-      classpath: $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar
-      dependencyReportJSON: $WERCKER_CACHE_DIR/dependency-check-report.json
-      urlGrafeas: $URL_GRAFEAS
-#    - script:
-#        name: List the occurrences
-#        code: |
-#          echo "% List occurrences"
-#          curl -v http://35.225.38.18:8080/v1alpha1/projects/getting-started-java/occurrences
-#           echo "% List notes"
-#           curl -v http://35.225.38.18:8080/v1alpha1/projects/NVD/notes
+#    - juanli-oracle/parse-upload-owasp-report:
+#      classpath: $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar
+#      dependencyReportJSON: $WERCKER_CACHE_DIR/dependency-check-report.json
+#      urlGrafeas: $URL_GRAFEAS
+    - script:
+        name: List the occurrences
+        code: |
+          echo "% List occurrences"
+          curl -v http://35.226.3.36:8080/v1alpha1/projects/getting-started-java/occurrences
+          echo "% List notes"
+          curl -v http://35.226.3.36:8080/v1alpha1/projects/NVD/notes
