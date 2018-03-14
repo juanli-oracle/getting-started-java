@@ -124,14 +124,18 @@ generateOccurrences:
 #        password: $PASSWORD
 #        insecure-skip-tls-verify: true
 #        command: port-forward $POD_ID 8080:8080 &
-    - juanli-oracle/parse-upload-owasp-report:
-      classpath: $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar
-      dependencyReportJSON: $WERCKER_CACHE_DIR/dependency-check-report.json
-      urlGrafeas: $URL_GRAFEAS
-    - script:
-        name: List the occurrences
-        code: |
-          echo "% List occurrences"
+#    - juanli-oracle/parse-upload-owasp-report:
+#      classpath: $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar
+#      dependencyReportJSON: $WERCKER_CACHE_DIR/dependency-check-report.json
+#      urlGrafeas: $URL_GRAFEAS
+#    - script:
+#        name: List the occurrences
+#        code: |
+#          echo "% List occurrences"
 #          curl -v http://35.226.3.36:8080/v1alpha1/projects/getting-started-java/occurrences
 #          echo "% List notes"
 #          curl -v http://35.226.3.36:8080/v1alpha1/projects/NVD/notes
+    - script:
+        name: generate upload occurrences
+        code: |
+          java -classpath $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar generateOccurrences $WERCKER_CACHE_DIR/dependency-check-report.json http://35.226.222.74:8080
