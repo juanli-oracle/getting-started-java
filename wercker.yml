@@ -118,6 +118,12 @@ deploy-grafeas:
 generateOccurrences:
   # The steps that parse the dependency-check-report.json to generate occurrences and upload to grafeas server
   steps:
+    - kubectl:
+        server: $GKE_SERVER
+        username: $USERNAME
+        password: $PASSWORD
+        insecure-skip-tls-verify: true
+        command: port-forward $POD_ID 8080:8080 &
     - juanli-oracle/parse-upload-owasp-report:
       classpath: $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar
       dependencyReportJSON: $WERCKER_CACHE_DIR/dependency-check-report.json
