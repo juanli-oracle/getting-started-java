@@ -84,30 +84,30 @@ security-scan:
           echo "% cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html"
           cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html
 
-deploy-grafeas:
-  # The steps that deploy the grafeas service on gke cluster
-  steps:
-    - kubectl:
-        server: https://35.184.0.39
-        username: admin
-        password: TJ5JuGZorg0cdpIy
-        insecure-skip-tls-verify: true
-        command: apply -f $WERCKER_CACHE_DIR/grafeas.yaml
-
-generateOccurrences:
-  # The steps that parse the dependency-check-report.json to generate occurrences and upload to grafeas server
-  steps:
-    - script:
-        name: Skip the grafeas deployment step
-        code: |
-          echo "% This step is skipped"
-
 #deploy-grafeas:
+  # The steps that deploy the grafeas service on gke cluster
+#  steps:
+#    - kubectl:
+#        server: https://35.184.0.39
+#        username: admin
+#        password: TJ5JuGZorg0cdpIy
+#        insecure-skip-tls-verify: true
+#        command: apply -f $WERCKER_CACHE_DIR/grafeas.yaml
+
+#generateOccurrences:
+  # The steps that parse the dependency-check-report.json to generate occurrences and upload to grafeas server
 #  steps:
 #    - script:
 #        name: Skip the grafeas deployment step
 #        code: |
 #          echo "% This step is skipped"
+
+deploy-grafeas:
+  steps:
+    - script:
+        name: Skip the grafeas deployment step
+        code: |
+          echo "% This step is skipped"
 #    - kubectl:
 #        server: $GKE_SERVER
 #        username: $USERNAME
@@ -115,19 +115,19 @@ generateOccurrences:
 #        insecure-skip-tls-verify: true
 #        command: port-forward $POD_ID 8080:8080
 
-#generateOccurrences:
+generateOccurrences:
   # The steps that parse the dependency-check-report.json to generate occurrences and upload to grafeas server
-#  steps:
+  steps:
 #    - kubectl:
 #        server: $GKE_SERVER
 #        username: $USERNAME
 #        password: $PASSWORD
 #        insecure-skip-tls-verify: true
 #        command: port-forward $POD_ID 8080:8080 &
-#    - juanli-oracle/parse-upload-owasp-report:
-#      classpath: $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar
-#      dependencyReportJSON: $WERCKER_CACHE_DIR/dependency-check-report.json
-#      urlGrafeas: $URL_GRAFEAS
+    - juanli-oracle/parse-upload-owasp-report:
+      classpath: $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar
+      dependencyReportJSON: $WERCKER_CACHE_DIR/dependency-check-report.json
+      urlGrafeas: $URL_GRAFEAS
 #    - script:
 #        name: List the occurrences
 #        code: |
