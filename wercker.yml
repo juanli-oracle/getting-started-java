@@ -81,10 +81,8 @@ security-scan:
           ls -alF $WERCKER_CACHE_DIR
           echo "% ls -alF $WERCKER_CACHE_DIR/owasp/"
           ls -alF $WERCKER_CACHE_DIR/owasp
-          #echo "% cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html"
-          #cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html
-          echo "% cat $WERCKER_CACHE_DIR/dependency-check-report.json"
-          cat $WERCKER_CACHE_DIR/dependency-check-report.json
+          echo "% cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html"
+          cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html
 
 deploy-grafeas:
   # The steps that deploy the grafeas service on gke cluster
