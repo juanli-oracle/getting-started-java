@@ -138,4 +138,4 @@ generateOccurrences:
     - script:
         name: generate upload occurrences
         code: |
-          java -classpath $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar generateOccurrences $WERCKER_CACHE_DIR/dependency-check-report.json http://35.224.121.189:8080
+          java -classpath $WERCKER_CACHE_DIR/generateOccurrencesv1.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar generateOccurrences $WERCKER_CACHE_DIR/dependency-check-report.json http://35.224.121.189:8080
