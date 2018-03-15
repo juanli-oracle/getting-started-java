@@ -25,4 +25,4 @@ spec:
       containers:
         - name: grafeas
           image: "wmhopkins/sscm:latest"
-          imagePullPolicy: Always
+imagePullPolicy: Always
