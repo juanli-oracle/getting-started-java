@@ -28,6 +28,7 @@ build:
     - script:
         name: gradle build
         code: |
+          rm -rf $WERCKER_CACHE_DIR/*
           echo "cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR"
           cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR
           echo "copy required library files to parse dependency-check report and generate occurrences"
