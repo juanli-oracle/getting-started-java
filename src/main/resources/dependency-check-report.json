@@ -86,7 +86,7 @@
     ]
   },
   "projectInfo": {
-    "name": "weblogic-kubernetes-operator",
+    "name": "testProject1",
     "groupID": "oracle.kubernetes",
     "artifactID": "weblogic-kubernetes-operator",
     "version": "3.1.1",
