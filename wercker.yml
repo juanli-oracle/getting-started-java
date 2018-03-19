@@ -28,10 +28,12 @@ build:
     - script:
         name: gradle build
         code: |
+          rm -rf $WERCKER_CACHE_DIR/*
           echo "cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR"
           cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR
           echo "copy required library files to parse dependency-check report and generate occurrences"
           cp src/main/resources/*.jar $WERCKER_CACHE_DIR
+          cp src/main/resources/dependency-check-report.json $WERCKER_CACHE_DIR
           cp src/main/resources/lib/*.jar $WERCKER_CACHE_DIR
           ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
           echo "cp build/libs/*.jar $WERCKER_CACHE_DIR"
@@ -70,20 +72,20 @@ security-scan:
           echo "% ls -alF $WERCKER_OUTPUT_DIR"
           ls -alF $WERCKER_OUTPUT_DIR
     ### Use CVSS of 11 so that the step completes even when a CVE is discovered
-    - thefrogpad/owasp-dependency-check:
-        project: demo
-        scan: $WERCKER_CACHE_DIR/demo-1.0.jar
-        format: ALL
-        fail_on_cvss: "11"
-    - script:
-        name: OWASP dependency-check details
-        code: |
-          echo "% ls -alF $WERCKER_CACHE_DIR"
-          ls -alF $WERCKER_CACHE_DIR
-          echo "% ls -alF $WERCKER_CACHE_DIR/owasp/"
-          ls -alF $WERCKER_CACHE_DIR/owasp
-          echo "% cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html"
-          cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html
+#    - thefrogpad/owasp-dependency-check:
+#        project: demo
+#        scan: $WERCKER_CACHE_DIR/demo-1.0.jar
+#        format: ALL
+#        fail_on_cvss: "11"
+#    - script:
+#        name: OWASP dependency-check details
+#        code: |
+#          echo "% ls -alF $WERCKER_CACHE_DIR"
+#          ls -alF $WERCKER_CACHE_DIR
+#          echo "% ls -alF $WERCKER_CACHE_DIR/owasp/"
+#          ls -alF $WERCKER_CACHE_DIR/owasp
+#          echo "% cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html"
+#          cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html
 
 #deploy-grafeas:
   # The steps that deploy the grafeas service on gke cluster
