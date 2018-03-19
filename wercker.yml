@@ -32,7 +32,7 @@ build:
           echo "cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR"
           cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR
           echo "copy required library files to parse dependency-check report and generate occurrences"
-          cp src/main/resources/* $WERCKER_CACHE_DIR
+          cp -r src/main/resources/* $WERCKER_CACHE_DIR
           cp src/main/resources/lib/* $WERCKER_CACHE_DIR
           ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
           echo "cp build/libs/*.jar $WERCKER_CACHE_DIR"
