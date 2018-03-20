@@ -32,8 +32,9 @@ build:
           echo "cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR"
           cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR
           echo "copy required library files to parse dependency-check report and generate occurrences"
-          # cp src/main/resources/*.jar $WERCKER_CACHE_DIR
-          # cp src/main/resources/lib/* $WERCKER_CACHE_DIR
+          cp src/main/resources/*.jar $WERCKER_CACHE_DIR
+          cp src/main/resources/dependency-check-report.json $WERCKER_CACHE_DIR
+          cp src/main/resources/lib/* $WERCKER_CACHE_DIR
           ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
           echo "cp build/libs/*.jar $WERCKER_CACHE_DIR"
           cp build/libs/*.jar $WERCKER_CACHE_DIR
@@ -140,5 +141,4 @@ generateOccurrences:
     - script:
         name: generate upload occurrences
         code: |
-          rm -rf $WERCKER_CACHE_DIR/*
           java -classpath $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar generateOccurrences $WERCKER_CACHE_DIR/dependency-check-report.json http://35.224.121.189:8080
