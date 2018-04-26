@@ -12,14 +12,6 @@ dev:
       code: |
         ./gradlew bootRun
 
-    ### REPLACE the above script step with this internal/watch step to enable 
-    ### dynamic rebuilding/reloading of the container in response to file changes.
-    #
-    # - internal/watch:
-    #     code: |
-    #       ./gradlew bootRun
-    #     reload: true
-
 # Build definition
 build:
   # The steps that will be executed on build
@@ -29,12 +21,8 @@ build:
         name: gradle build
         code: |
           rm -rf $WERCKER_CACHE_DIR/*
-          echo "cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR"
-          cp src/main/resources/grafeas.yaml $WERCKER_CACHE_DIR
           echo "copy required library files to parse dependency-check report and generate occurrences"
-          cp src/main/resources/*.jar $WERCKER_CACHE_DIR
-          cp src/main/resources/dependency-check-report.json $WERCKER_CACHE_DIR
-          cp src/main/resources/lib/* $WERCKER_CACHE_DIR
+          cp src/main/resources/* $WERCKER_CACHE_DIR
           ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
           echo "cp build/libs/*.jar $WERCKER_CACHE_DIR"
           cp build/libs/*.jar $WERCKER_CACHE_DIR
@@ -50,14 +38,6 @@ build:
           echo "% ls -alF $WERCKER_OUTPUT_DIR"
           ls -alF $WERCKER_OUTPUT_DIR
 
-    ### Run dependency-check using gradle plugin with modified build.gradle
-    # - script:
-    #     name: OWASP Dependency-Check
-    #     code: |
-    #       ./gradlew --project-cache-dir=$WERCKER_CACHE_DIR dependencyCheckAnalyze
-    #       echo "% cp build/reports/*.* $WERCKER_CACHE_DIR"
-    #       cp build/reports/*.* $WERCKER_CACHE_DIR
-
 # security scan definition
 security-scan:
   # The steps that will run the security scan to check for libraries with reported CVEs
@@ -67,78 +47,5 @@ security-scan:
         code: |
           echo "% env"
           env
-          echo "% ls -alF $WERCKER_CACHE_DIR"
-          ls -alF $WERCKER_CACHE_DIR
-          echo "% ls -alF $WERCKER_OUTPUT_DIR"
-          ls -alF $WERCKER_OUTPUT_DIR
-    ### Use CVSS of 11 so that the step completes even when a CVE is discovered
-#    - thefrogpad/owasp-dependency-check:
-#        project: demo
-#        scan: $WERCKER_CACHE_DIR/demo-1.0.jar
-#        format: ALL
-#        fail_on_cvss: "11"
-#    - script:
-#        name: OWASP dependency-check details
-#        code: |
-#          echo "% ls -alF $WERCKER_CACHE_DIR"
-#          ls -alF $WERCKER_CACHE_DIR
-#          echo "% ls -alF $WERCKER_CACHE_DIR/owasp/"
-#          ls -alF $WERCKER_CACHE_DIR/owasp
-#          echo "% cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html"
-#          cat $WERCKER_CACHE_DIR/dependency-check-vulnerability.html
-
-#deploy-grafeas:
-  # The steps that deploy the grafeas service on gke cluster
-#  steps:
-#    - kubectl:
-#        server: https://35.184.96.16
-#        username: admin
-#        password: 1dXWGYkWsa9Xnnv7
-#        insecure-skip-tls-verify: true
-#        command: apply -f $WERCKER_CACHE_DIR/grafeas.yaml
-
-#generateOccurrences:
-  # The steps that parse the dependency-check-report.json to generate occurrences and upload to grafeas server
-#  steps:
-#    - script:
-#        name: Skip the grafeas deployment step
-#        code: |
-#          echo "% This step is skipped"
-
-deploy-grafeas:
-  steps:
-    - script:
-        name: Skip the grafeas deployment step
-        code: |
-          echo "% Test This step is skipped"
-#    - kubectl:
-#        server: $GKE_SERVER
-#        username: $USERNAME
-#        password: $PASSWORD
-#        insecure-skip-tls-verify: true
-#        command: port-forward $POD_ID 8080:8080
-
-generateOccurrences:
-  # The steps that parse the dependency-check-report.json to generate occurrences and upload to grafeas server
-  steps:
-#    - kubectl:
-#        server: $GKE_SERVER
-#        username: $USERNAME
-#        password: $PASSWORD
-#        insecure-skip-tls-verify: true
-#        command: port-forward $POD_ID 8080:8080 &
-#    - juanli-oracle/parse-upload-owasp-report:
-#      classpath: $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar
-#      dependencyReportJSON: $WERCKER_CACHE_DIR/dependency-check-report.json
-#      urlGrafeas: $URL_GRAFEAS
-#    - script:
-#        name: List the occurrences
-#        code: |
-#          echo "% List occurrences"
-#          curl -v http://35.226.3.36:8080/v1alpha1/projects/getting-started-java/occurrences
-#          echo "% List notes"
-#          curl -v http://35.226.3.36:8080/v1alpha1/projects/NVD/notes
-    - script:
-        name: generate upload occurrences
-        code: |
-          java -classpath $WERCKER_CACHE_DIR/generateOccurrences.jar:$WERCKER_CACHE_DIR/com.nimbusds.oauth2-oidc-sdk.jar:$WERCKER_CACHE_DIR/json-smart-12.jar:$WERCKER_CACHE_DIR/com.sun.mail.javax.mail.jar generateOccurrences $WERCKER_CACHE_DIR/dependency-check-report.json http://35.224.121.189:8080
+          export PATH=$PATH:$WERCKER_CACHE_DIR
+          CLAIR_OUTPUT=High CLAIR_ADDR=http://129.146.68.168:30061 CLAIR_TIMEOUT=10 DOCKER_TIMEOUT=10 DOCKER_USER=juanlioracle DOCKER_PASSWORD=dockerjuanli1 DOCKER_INSECURE=true REGISTRY_INSECURE=true JSON_OUTPUT=true klar-2.0.2-linux-amd64 quay.io/coreos/clair
