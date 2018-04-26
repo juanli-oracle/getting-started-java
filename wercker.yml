@@ -41,4 +41,5 @@ security-scan:
           echo "% env"
           env
           export PATH=$PATH:$WERCKER_CACHE_DIR
+          export KLAR_TRACE=true
           CLAIR_OUTPUT=High CLAIR_ADDR=http://129.146.68.168:30061 CLAIR_TIMEOUT=10 DOCKER_TIMEOUT=10 DOCKER_USER=juanlioracle DOCKER_PASSWORD=dockerjuanli1 DOCKER_INSECURE=true REGISTRY_INSECURE=true JSON_OUTPUT=true klar-2.0.2-linux-amd64 quay.io/coreos/clair
