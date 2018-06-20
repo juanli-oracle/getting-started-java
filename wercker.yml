@@ -1,4 +1,36 @@
 # docker box definition
+box:
+  id: openjdk
+  ports:
+    - "8080"
+
+# defining the dev pipeline
+dev:
+  steps:
+    - script:
+      name: gradle bootRun
+      code: |
+        ./gradlew bootRun
+
+# Build definition
+build:
+  # The steps that will be executed on build
+  steps:
+    # A step that executes `gradle build` command
+    - script:
+        name: gradle build
+        code: |
+          rm -rf $WERCKER_CACHE_DIR/*
+          cp -r src/main/resources/* $WERCKER_CACHE_DIR
+          ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
+    - script:
+        name: environment details
+        code: |
+          echo "% env"
+          env
+          echo "% ls -alF $WERCKER_CACHE_DIR"
+          ls -alF $WERCKER_CACHE_DIR
+
 scan:
   box:
     id: phx.ocir.io/kubernetessecurity/sscm/sscm-go-mvn-jdk8
