@@ -33,7 +33,7 @@ build:
 
 scan:
   box:
-    id: phx.ocir.io/kubernetessecurity/sscm/sscm-go-mvn-jdk8
+    id: phx.ocir.io/kubernetessecurity/sscm/sscm-go-mvn-jdk8:latest
     username: $SSCM_OCIR_PULLER_USER
     password: $SSCM_OCIR_PULLER_SECRET
     tag: latest
