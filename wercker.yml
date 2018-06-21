@@ -59,4 +59,4 @@ scan:
           ls -alF $WERCKER_CACHE_DIR
           echo "% Clair Scan Finished"
           trap finish EXIT
-          # /var/lib/scripts/sscm-scanner/run_sscm_scanner.sh
+          /var/lib/scripts/sscm-scanner/run_sscm_scanner.sh
