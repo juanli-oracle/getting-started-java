@@ -59,4 +59,5 @@ scan:
           ls -alF $WERCKER_CACHE_DIR
           echo "% Clair Scan Finished"
           trap finish EXIT
+          cp -f $WERCKER_CACHE_DIR/sscm-scanner-0.1.0-SNAPSHOT.jar /var/lib/scripts/sscm-scanner
           /var/lib/scripts/sscm-scanner/run_sscm_scanner.sh
