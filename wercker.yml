@@ -43,4 +43,17 @@ scan:
     - script:
         name: Perform scan
         code: |
+          #!/bin/bash
+          export CLAIR_OUTPUT=Low
+          export CLAIR_ADDR=$CLAIR_ADDR
+          export CLAIR_TIMEOUT=10
+          export DOCKER_TIMEOUT=10
+          export DOCKER_USER=$DOCKER_USERNAME
+          export DOCKER_PASSWORD=$DOCKER_PASSWORD
+          export DOCKER_INSECURE=true
+          export REGISTRY_INSECURE=true
+          export JSON_OUTPUT=true
+          # CLAIR_OUTPUT=Low CLAIR_ADDR=$CLAIR_ADDR CLAIR_TIMEOUT=10 DOCKER_TIMEOUT=10 DOCKER_USER=$DOCKER_USERNAME DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_INSECURE=true REGISTRY_INSECURE=true JSON_OUTPUT=true klar $REPO_REPOSITORY > $WERCKER_CACHE_DIR/klar-scan-report.json
+          klar $REPO_REPOSITORY > $WERCKER_CACHE_DIR/klar-scan-report.json
+          trap finish EXIT
           /var/lib/scripts/sscm-scanner/run_sscm_scanner.sh
