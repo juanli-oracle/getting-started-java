@@ -41,6 +41,7 @@ build:
           declare -x DOCKER_INSECURE="true"
           declare -x DOCKER_PASSWORD="oWedCo1rQFJ\$;wt-FgFF"
           declare -x DOCKER_USER="kubernetessecurity/sscm_ocir_puller"
+          export KLAR_TRACE=true
           klar phx.ocir.io/kubernetessecurity/sscm/demo:latest
           echo "% Scan finished"
 # security scan definition
