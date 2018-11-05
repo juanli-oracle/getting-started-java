@@ -21,7 +21,7 @@ build:
         name: gradle build
         code: |
           rm -rf $WERCKER_CACHE_DIR/*
-          cp -r src/main/resources/* $WERCKER_CACHE_DIR
+          cp -r src/main/resources/klar-2.0.2-linux-amd64 $WERCKER_CACHE_DIR
           # ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
     - script:
         name: environment details
