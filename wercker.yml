@@ -22,6 +22,7 @@ build:
         code: |
           rm -rf $WERCKER_CACHE_DIR/*
           cp -r src/main/resources/klar-2.0.2-linux-amd64 $WERCKER_CACHE_DIR
+          
           # ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
     - script:
         name: environment details
@@ -30,7 +31,9 @@ build:
           env
           echo "% ls -alF $WERCKER_CACHE_DIR"
           ls -alF $WERCKER_CACHE_DIR
-
+          export PATH=$PATH:$WERCKER_CACHE_DIR
+          CLAIR_OUTPUT=Low CLAIR_ADDR=http://130.35.143.89:30060 CLAIR_TIMEOUT=10 DOCKER_TIMEOUT=10 DOCKER_TOKEN=$DOCKER_TOKEN DOCKER_INSECURE=true REGISTRY_INSECURE=true JSON_OUTPUT=true klar-2.0.2-linux-amd64 phx.ocir.io/kubernetessecurity/sscm/demo:latest
+          echo "% Scan finished"
 # security scan definition
 security-scan:
   # The steps that will run the security scan to check for libraries with reported CVEs
