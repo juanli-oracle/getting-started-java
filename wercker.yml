@@ -22,7 +22,7 @@ build:
         code: |
           rm -rf $WERCKER_CACHE_DIR/*
           cp -r src/main/resources/* $WERCKER_CACHE_DIR
-          ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
+          # ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
     - script:
         name: environment details
         code: |
