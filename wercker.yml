@@ -32,9 +32,9 @@ build:
           echo "% ls -alF $WERCKER_CACHE_DIR"
           ls -alF $WERCKER_CACHE_DIR
           export PATH=$PATH:$WERCKER_CACHE_DIR
-          declare -x https_proxy=http://www-proxy-hqdc.us.oracle.com:80
-          declare -x http_proxy=http://www-proxy-hqdc.us.oracle.com:80
-          declare -x NO_PROXY="localhost,.us.oracle.com,.oraclecorp.com,.oracle.com"
+          # declare -x https_proxy=http://www-proxy-hqdc.us.oracle.com:80
+          # declare -x http_proxy=http://www-proxy-hqdc.us.oracle.com:80
+          # declare -x NO_PROXY="localhost,.us.oracle.com,.oraclecorp.com,.oracle.com"
           declare -x CLAIR_ADDR="http://130.35.143.89:30060"
           declare -x CLAIR_OUTPUT="Low"
           declare -x CLAIR_THRESHOLD="10"
