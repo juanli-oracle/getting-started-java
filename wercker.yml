@@ -21,8 +21,7 @@ build:
         name: gradle build
         code: |
           rm -rf $WERCKER_CACHE_DIR/*
-          cp -r src/main/resources/klar $WERCKER_CACHE_DIR
-          
+          cp -r src/main/resources/* $WERCKER_CACHE_DIR
           # ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
     - script:
         name: environment details
@@ -31,27 +30,33 @@ build:
           env
           echo "% ls -alF $WERCKER_CACHE_DIR"
           ls -alF $WERCKER_CACHE_DIR
-          export PATH=$PATH:$WERCKER_CACHE_DIR
-          # declare -x https_proxy=http://www-proxy-hqdc.us.oracle.com:80
-          # declare -x http_proxy=http://www-proxy-hqdc.us.oracle.com:80
-          # declare -x NO_PROXY="localhost,.us.oracle.com,.oraclecorp.com,.oracle.com"
-          declare -x CLAIR_ADDR="http://130.35.143.89:30060"
-          declare -x CLAIR_OUTPUT="Low"
-          declare -x CLAIR_THRESHOLD="10"
-          declare -x DOCKER_INSECURE="true"
-          declare -x DOCKER_PASSWORD="oWedCo1rQFJ\$;wt-FgFF"
-          declare -x DOCKER_USER="kubernetessecurity/sscm_ocir_puller"
-          # export KLAR_TRACE=false
-          klar phx.ocir.io/kubernetessecurity/sscm/demo:latest
-          echo "% Scan finished"
-# security scan definition
+
 scan:
-  # The steps that will run the security scan to check for libraries with reported CVEs
+  box:
+    id: phx.ocir.io/kubernetessecurity/sscm/sscm-go-mvn-jdk8:latest
+    username: $SSCM_OCIR_PULLER_USER
+    password: $SSCM_OCIR_PULLER_SECRET
+    tag: latest
+    registry: phx.ocir.io
+
   steps:
     - script:
-        name: environment details
+        name: Perform scan
         code: |
-          echo "% env"
-          env
-          export PATH=$PATH:$WERCKER_CACHE_DIR
-          echo "% Scan finished"
+          #!/bin/bash
+          export CLAIR_OUTPUT=$CLAIR_OUTPUT
+          export CLAIR_ADDR=$CLAIR_ADDR
+          export CLAIR_TIMEOUT=$CLAIR_TIMEOUT
+          export DOCKER_TIMEOUT=$DOCKER_TIMEOUT
+          export DOCKER_USER=$DOCKER_USERNAME
+          export DOCKER_PASSWORD=$DOCKER_PASSWORD
+          export DOCKER_INSECURE=$DOCKER_INSECURE
+          export JSON_OUTPUT=$JSON_OUTPUT
+          export KLAR_TRACE=true
+          klar $REPO_REPOSITORY > $WERCKER_CACHE_DIR/klar-scan-report.json
+          echo "% ls -alF $WERCKER_CACHE_DIR"
+          ls -alF $WERCKER_CACHE_DIR
+          cat $WERCKER_CACHE_DIR/klar-scan-report.json
+          echo "% Clair Scan Finished"
+          trap finish EXIT
+          /var/lib/scripts/sscm-scanner/run_sscm_scanner.sh
