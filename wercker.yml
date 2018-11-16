@@ -33,8 +33,8 @@ build:
 
 scan:
   box:
-    # id: phx.ocir.io/kubernetessecurity/sscm/sscm-go-mvn-jdk8:latest
-    id: phx.ocir.io/kubernetessecurity/sscm/sscm-go-mvn-jdk8:dev-138709
+    id: phx.ocir.io/kubernetessecurity/sscm/sscm-go-mvn-jdk8:latest
+    # id: phx.ocir.io/kubernetessecurity/sscm/sscm-go-mvn-jdk8:dev-138709
     username: $SSCM_OCIR_PULLER_USER
     password: $SSCM_OCIR_PULLER_SECRET
     tag: latest
@@ -53,11 +53,11 @@ scan:
           export DOCKER_PASSWORD=$DOCKER_PASSWORD
           export DOCKER_INSECURE=$DOCKER_INSECURE
           export JSON_OUTPUT=$JSON_OUTPUT
-          export KLAR_TRACE=true
-          klar $REPO_REPOSITORY > $WERCKER_CACHE_DIR/klar-scan-report.json
+          # export KLAR_TRACE=true
+          # klar $REPO_REPOSITORY > $WERCKER_CACHE_DIR/klar-scan-report.json
           echo "% ls -alF $WERCKER_CACHE_DIR"
           ls -alF $WERCKER_CACHE_DIR
-          cat $WERCKER_CACHE_DIR/klar-scan-report.json
+          # cat $WERCKER_CACHE_DIR/klar-scan-report.json
           echo "% Clair Scan Finished"
           trap finish EXIT
           /var/lib/scripts/sscm-scanner/run_sscm_scanner.sh
